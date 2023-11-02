@@ -10,7 +10,7 @@ export default async () => {
 
   return (
     <div className="w-screen min-h-screen bg-gradient-to-br from-neutral-500 via-transparent to-teal-300">
-      <div className="absolute top-1/2 left-1/2 -tranlate-y-1/2 -translate-x-1/2">
+      <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2">
         <div className="flex flex-col item-center text-center">
           <div className="flex justify-center items-center">
             <h1 className="text-5xl font-semibold">Chat with any PDF</h1>

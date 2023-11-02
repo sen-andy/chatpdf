@@ -6,8 +6,10 @@ import React, { useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { useRouter } from 'next/navigation'
 
 const FileUpload = () => {
+    const router = useRouter()
     const [ uploading, setUploading ] = useState(false)
     const { mutate, isPending } = useMutation({
         mutationFn: async ({
@@ -28,7 +30,7 @@ const FileUpload = () => {
         onDrop: async (acceptedFiles) => {
             const file = acceptedFiles[0]
             if (file.size > 10 * 1024 * 1024) {
-                toast.error('file limit exceeded')
+                toast.error("file limit exceeded")
                 return
             }
 
@@ -40,8 +42,9 @@ const FileUpload = () => {
                     return;
                 }
                 mutate(data, {
-                    onSuccess: data => {
-                        toast.success(data.message)
+                    onSuccess: ({ chat_id }) => {
+                        toast.success("chat created")
+                        router.push(`/chat/${chat_id}`)
                     },
                     onError: err => {
                         toast.error("error creating chat")
