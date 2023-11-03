@@ -37,10 +37,11 @@ const FileUpload = () => {
             try {
                 setUploading(true)
                 const data = await uploadToS3(file)
-                if (!data?.file_key || !data.file_name) {
+                if (!data?.file_key || !data.file_name || data.status === 200) {
                     toast.error("something went wrong");
                     return;
                 }
+                toast.success('Update successful')
                 mutate(data, {
                     onSuccess: ({ chat_id }) => {
                         toast.success("chat created")
@@ -51,8 +52,7 @@ const FileUpload = () => {
                     }
                 })
             } catch (err) {
-                //TODO add toast
-                console.log(err)
+                console.error(err)
             } finally {
                 setUploading(false)
             }

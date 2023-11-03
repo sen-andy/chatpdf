@@ -1,28 +1,18 @@
-import AWS from 'aws-sdk'
-import fs from 'fs'
+import { GetObjectCommand } from '@aws-sdk/client-s3'
+import { s3Client } from './s3'
+import { writeFileSync } from 'fs'
 
 export const downloadFromS3 = async (file_key: string) => {
     try {
-        AWS.config.update({
-            accessKeyId: process.env.NEXT_PUBLIC_S3_ACCESS_KEY_ID,
-            secretAccessKey: process.env.NEXT_PUBLIC_S3_SECRET_ACCESS_KEY
-        })
-
-        const s3 = new AWS.S3({
-            params: {
-                Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
-            },
-            region: 'us-east-2'
-        })
-
-        const params = {
-            Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME!,
+        const getObject = new GetObjectCommand({
+            Bucket: process.env.NEXT_PUBLIC_S3_BUCKET_NAME,
             Key: file_key
-        }
+        })
 
-        const obj = await s3.getObject(params).promise()
+        const res = await s3Client.send(getObject)
         const file_name = `/tmp/pdf-${Date.now()}.pdf`
-        fs.writeFileSync(file_name, obj.Body as Buffer)
+        writeFileSync(file_name, await res.Body?.transformToByteArray()!)
+
         return file_name
     } catch (err) {
         console.error(err)
