@@ -8,7 +8,7 @@ type Props = {
 const PDFViewer = ({ pdf_url }: Props) => {
     return (
         <iframe
-            src={`https://docs.google.com/viewer?url=${pdf_url}&embedded=true&format=pdf`}
+            src={`https://docs.google.com/viewerng/viewer?url=${pdf_url}&embedded=true&format=pdf`}
             className='w-full h-full'>
         </iframe>
     )
